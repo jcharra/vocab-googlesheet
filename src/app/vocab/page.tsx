@@ -1,30 +1,24 @@
-"use client";
+import { GoogleSpreadsheet } from "google-spreadsheet";
+import { VocabRow } from "../types";
+import VocabTest from "./VocabTest";
 
-import { useState } from "react";
+export default async function Vocab() {
+  const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID || "", {
+    apiKey: process.env.GOOGLE_API_KEY || "",
+  });
 
-export default function Vocab() {
-  const [latin, setLatin] = useState("");
-  const [forms, setForms] = useState("");
-  const [french, setFrench] = useState("");
+  await doc.loadInfo();
+  const sheet = doc.sheetsByIndex[0];
+  const sheetRows = await sheet.getRows();
 
-  const loadNext = async () => {
-    const res = await fetch("/api/randomWord");
-    const { latin, forms, french } = await res.json();
-    setLatin(latin);
-    setForms(forms);
-    setFrench(french);
-  };
+  const rows: VocabRow[] = [];
+  for (const r of sheetRows) {
+    rows.push({ latin: r.get("latin"), forms: r.get("formes"), french: r.get("français") });
+  }
 
   return (
     <div className="flex flex-col">
-      <div>
-        <div>{latin}</div>
-        {!!forms ? <div>{forms}</div> : null}
-        <div>{french}</div>
-      </div>
-      <button className="rounded bg-slate-200 px-4 py-2" onClick={loadNext}>
-        Next
-      </button>
+      <VocabTest rows={rows} />
     </div>
   );
 }

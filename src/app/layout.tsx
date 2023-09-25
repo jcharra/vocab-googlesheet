@@ -13,8 +13,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main className="flex min-h-screen flex-col items-center justify-between p-24">
-          <h1>Vocab trainer</h1>
+        <main className="flex min-h-screen flex-col items-center justify-center p-24">
+          <div>
+            <h1>Vocab trainer</h1>
+          </div>
+
           {children}
         </main>
       </body>
