@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { VocabRow } from "../types";
+import { VocabRow } from "./types";
 
 export default function VocabTest({ rows }: { rows: VocabRow[] }) {
   const [row, setRow] = useState<VocabRow>();
@@ -23,23 +23,22 @@ export default function VocabTest({ rows }: { rows: VocabRow[] }) {
 
   return (
     <div className="flex flex-col">
-      <div className="py-8 flex flex-col align-center">
+      <div className="py-8 flex flex-col align-center h-36">
         <div className="font-bold">{row?.latin}</div>
         <div className={!visible ? "invisible" : ""}>
           {row?.forms ? <div className="italic">{row.forms}</div> : null}
           <div>{row?.french}</div>
         </div>
       </div>
-      <button
-        className={`rounded bg-slate-200 px-4 py-2 mb-4 ${visible ? "text-white/25" : "text-black"}`}
-        onClick={() => setVisible(true)}
-        disabled={visible}
-      >
-        Anzeigen
-      </button>
-      <button className="rounded bg-slate-200 px-4 py-2" onClick={() => next()}>
-        Weiter
-      </button>
+      {row ? (
+        <button className="rounded bg-slate-200 px-4 py-2 mb-4" onClick={() => (!visible ? setVisible(true) : next())}>
+          {!visible ? "Lösung anzeigen" : "Weiter"}
+        </button>
+      ) : (
+        <button className="rounded bg-slate-200 px-4 py-2 mb-4" onClick={() => next()}>
+          Los geht's
+        </button>
+      )}
     </div>
   );
 }
