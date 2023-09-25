@@ -36,7 +36,7 @@ export default function VocabTest({ rows }: { rows: VocabRow[] }) {
         </button>
       ) : (
         <button className="rounded bg-slate-200 px-4 py-2 mb-4" onClick={() => next()}>
-          Los geht's
+          Start
         </button>
       )}
     </div>
