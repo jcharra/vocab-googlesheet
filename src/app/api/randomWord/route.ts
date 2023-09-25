@@ -9,8 +9,8 @@ const CACHE_LIMIT_IN_SECS = 10;
 export async function GET() {
   const now = new Date();
   if (!userRows || userRows.length === 0 || differenceInSeconds(now, cachingTimestamp) > CACHE_LIMIT_IN_SECS) {
-    const doc = new GoogleSpreadsheet("1Ul5G_EOk0BXwAfHfohQqc0bX3Npir3EbN06cYHg7qJI", {
-      apiKey: process.env.GOOGLE_API_KEY,
+    const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID || "", {
+      apiKey: process.env.GOOGLE_API_KEY || "",
     });
 
     await doc.loadInfo(); // loads document properties and worksheets
