@@ -3,6 +3,8 @@ import { VocabRow } from "./types";
 import VocabTest from "./VocabTest";
 import Image from "next/image";
 
+export const revalidate = 120;
+
 export default async function Vocab() {
   const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID || "", {
     apiKey: process.env.GOOGLE_API_KEY || "",
