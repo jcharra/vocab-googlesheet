@@ -71,8 +71,8 @@ export default function VocabTest({ rows }: { rows: VocabRow[] }) {
       )}
 
       <div className="py-4 flex flex-row justify-between font-bold font-mono">
-        <div className="w-1/2 text-center text-green-500 mr-4">{correct ? convert(correct) : "-"}</div>
-        <div className="w-1/2  text-center text-red-500 ml-4">{incorrect ? convert(incorrect) : "-"}</div>
+        <div className="w-1/2 text-center text-green-500 mr-4">{correct ? convert(correct) : ""}</div>
+        <div className="w-1/2  text-center text-red-500 ml-4">{incorrect ? convert(incorrect) : ""}</div>
       </div>
     </div>
   );
