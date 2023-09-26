@@ -48,7 +48,7 @@ export default function VocabTest({ rows }: { rows: VocabRow[] }) {
       )}
 
       {solutionShown && (
-        <div className="flex flex-row">
+        <div className="flex flex-row justify-between">
           <button
             className="rounded px-4 py-2 mr-4 bg-green-300"
             onClick={() => {
@@ -70,9 +70,9 @@ export default function VocabTest({ rows }: { rows: VocabRow[] }) {
         </div>
       )}
 
-      <div className="py-4 flex flex-row font-bold">
-        <div className="w-1/2 text-center text-green-500">{correct ? convert(correct) : "-"}</div>
-        <div className="w-1/2  text-center text-red-500">{incorrect ? convert(incorrect) : "-"}</div>
+      <div className="py-4 flex flex-row justify-between font-bold font-mono">
+        <div className="w-1/2 text-center text-green-500 mr-4">{correct ? convert(correct) : "-"}</div>
+        <div className="w-1/2  text-center text-red-500 ml-4">{incorrect ? convert(incorrect) : "-"}</div>
       </div>
     </div>
   );
