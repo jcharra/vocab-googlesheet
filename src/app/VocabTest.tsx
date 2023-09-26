@@ -25,8 +25,8 @@ export default function VocabTest({ rows }: { rows: VocabRow[] }) {
   };
 
   return (
-    <div className="flex flex-col">
-      <div className="py-8 flex flex-col align-center h-36">
+    <div className="flex flex-col h-36">
+      <div className="py-8 flex flex-col align-center">
         <div className="font-bold">{row?.latin}</div>
         <div className={!solutionShown ? "invisible" : ""}>
           {row?.forms ? <div className="italic">{row.forms}</div> : null}
