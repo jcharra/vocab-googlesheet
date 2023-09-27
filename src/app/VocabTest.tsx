@@ -1,49 +1,95 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { VocabRow } from "./types";
+import Stats from "./Stats";
+import { getRandomPermutation } from "./utils";
 import { convert } from "roman-numeral";
+
+const RETRY_DISTANCE = 4;
 
 export default function VocabTest({ rows }: { rows: VocabRow[] }) {
   const [row, setRow] = useState<VocabRow>();
+  const [testRows, setTestRows] = useState<VocabRow[]>(rows);
   const [solutionShown, setSolutionShown] = useState(false);
   const [correct, setCorrect] = useState(0);
   const [incorrect, setIncorrect] = useState(0);
+  const [index, setIndex] = useState(0);
+  const [running, setRunning] = useState(false);
 
-  const nextVocab = () => {
-    while (true) {
-      const idx = Math.floor(Math.random() * rows.length);
-      if (rows[idx].latin !== row?.latin) {
-        return rows[idx];
-      }
+  useEffect(() => {
+    if (rows?.length && running) {
+      const shuffled = getRandomPermutation(rows);
+      setTestRows(shuffled);
+    }
+  }, [running, rows]);
+
+  useEffect(() => {
+    setSolutionShown(false);
+
+    if (index >= testRows.length) {
+      setRunning(false);
+    } else {
+      setRow(testRows[index]);
+    }
+  }, [index, testRows]);
+
+  const restart = () => {
+    setIndex(0);
+    setCorrect(0);
+    setIncorrect(0);
+    setRunning(true);
+  };
+
+  const reinsertLater = (row: VocabRow) => {
+    if (index + RETRY_DISTANCE >= testRows.length) {
+      testRows.push(row);
+    } else {
+      testRows.splice(index + RETRY_DISTANCE, 0, row);
     }
   };
 
-  const next = () => {
-    setSolutionShown(false);
-    setRow(nextVocab());
-  };
+  if (!running) {
+    if (index > 0) {
+      return (
+        <div className="flex flex-col h-36">
+          <div className="rounded py-1 mt-2 text-center text-2xl">finis</div>
+          <div className="py-4">
+            <div>Rectus: {correct ? convert(correct) : "nullus"}</div>
+            <div>Falsus: {incorrect ? convert(incorrect) : "nullus"}</div>
+          </div>
+          <button className="rounded py-1 mt-2 text-center bg-green-100" onClick={restart}>
+            iterum?
+          </button>
+        </div>
+      );
+    } else {
+      return (
+        <div className="flex flex-col h-36">
+          <button className="rounded py-1 mt-2 text-center bg-green-100" onClick={restart}>
+            incipere
+          </button>
+        </div>
+      );
+    }
+  }
+
+  if (!row) {
+    return null;
+  }
 
   return (
     <div className="flex flex-col h-36">
       <div className="py-8 flex flex-col align-center">
-        <div className="font-bold">{row?.latin}</div>
+        <div className="font-bold">{row.latin}</div>
         <div className={!solutionShown ? "invisible" : ""}>
-          {row?.forms ? <div className="italic">{row.forms}</div> : null}
-          <div>{row?.french}</div>
+          {row.forms ? <div className="italic">{row.forms}</div> : null}
+          <div>{row.french}</div>
         </div>
       </div>
-      {!row && (
-        <button className="rounded bg-slate-200 px-4 py-2" onClick={() => next()}>
-          Start
-        </button>
-      )}
-      {!solutionShown && row && (
-        <button
-          className="rounded bg-slate-200 px-4 py-2"
-          onClick={() => (!solutionShown ? setSolutionShown(true) : next())}
-        >
-          Lösung anzeigen
+      {!solutionShown && (
+        <button className="rounded bg-slate-200 px-4 py-2" onClick={() => setSolutionShown(true)}>
+          significare
         </button>
       )}
 
@@ -53,27 +99,25 @@ export default function VocabTest({ rows }: { rows: VocabRow[] }) {
             className="rounded px-4 py-2 mr-4 bg-green-300"
             onClick={() => {
               setCorrect((n) => n + 1);
-              next();
+              setIndex((n) => n + 1);
             }}
           >
-            Korrekt
+            rectus
           </button>
           <button
             className="rounded px-4 py-2 bg-red-300"
             onClick={() => {
               setIncorrect((n) => n + 1);
-              next();
+              reinsertLater(row);
+              setIndex((n) => n + 1);
             }}
           >
-            Falsch
+            falsus
           </button>
         </div>
       )}
 
-      <div className="py-4 flex flex-row justify-between font-bold font-mono">
-        <div className="w-1/2 text-center text-green-500 mr-4">{correct ? convert(correct) : ""}</div>
-        <div className="w-1/2  text-center text-red-500 ml-4">{incorrect ? convert(incorrect) : ""}</div>
-      </div>
+      <Stats correct={correct} incorrect={incorrect} />
     </div>
   );
 }

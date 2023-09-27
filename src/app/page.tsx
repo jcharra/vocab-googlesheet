@@ -1,7 +1,7 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
-import { VocabRow } from "./types";
-import VocabTest from "./VocabTest";
 import Image from "next/image";
+import VocabTest from "./VocabTest";
+import { VocabRow } from "./types";
 
 export const revalidate = 120;
 
