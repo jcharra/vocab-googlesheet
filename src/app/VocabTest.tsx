@@ -55,10 +55,19 @@ export default function VocabTest({ rows }: { rows: VocabRow[] }) {
         <div className="flex flex-col h-36">
           <div className="rounded py-1 mt-2 text-center text-2xl">finis</div>
           <div className="py-4">
-            <div>Rectus: {correct ? convert(correct) : "nullus"}</div>
-            <div>Falsus: {incorrect ? convert(incorrect) : "nullus"}</div>
+            <div>
+              <div className="w-24 inline-block">Rectus:</div>
+              <div className="inline-block text-right"> {correct ? convert(correct) : "nullus"}</div>
+            </div>
+            <div>
+              <div className="w-24 inline-block">Falsus:</div>
+              <div className="inline-block text-right"> {incorrect ? convert(incorrect) : "nullus"}</div>
+            </div>
           </div>
-          <button className="rounded py-1 mt-2 text-center bg-green-100" onClick={restart}>
+          <button
+            className={`opacity-100 transition-opacity duration-500 rounded py-1 mt-2 text-center bg-green-100`}
+            onClick={restart}
+          >
             iterum?
           </button>
         </div>
