@@ -4,6 +4,7 @@ import VocabTest from "./VocabTest";
 import { VocabRow } from "./types";
 
 export const revalidate = 120;
+export const dynamic = "force-dynamic";
 
 export default async function Vocab() {
   const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID || "", {
