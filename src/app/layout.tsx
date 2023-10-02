@@ -7,6 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "vocab trainer",
   description: "train your vocab easily",
+  manifest: "/manifest.webmanifest",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
