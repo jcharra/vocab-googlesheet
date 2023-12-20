@@ -17,7 +17,9 @@ export default async function Vocab() {
 
   const rows: VocabRow[] = [];
   for (const r of sheetRows) {
-    rows.push({ latin: r.get("latin"), forms: r.get("formes"), french: r.get("français") });
+    if (r.get("latin")) {
+      rows.push({ latin: r.get("latin"), forms: r.get("formes"), french: r.get("français") });
+    }
   }
 
   return (
